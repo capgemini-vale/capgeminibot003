@@ -42,10 +42,10 @@
 			],
 			"request": {
 				"url": {
-					"raw": "https://sma-g2-adm.prosodie.com/servlet/talk?context={{context_string}}&botId=cb81e7a0-8782-485f-ad09-786dab4d9b6b&userInput=REQ000011631623&space=VALE&language=pt&userId=user_teste&userUrl=postman&format=json",
+					"raw": "https://sma-g7-adm.prosodie.com/servlet/talk?context={{context_string}}&botId=cb81e7a0-8782-485f-ad09-786dab4d9b6b&userInput=REQ000011631623&space=VALE&language=pt&userId=user_teste&userUrl=postman&format=json",
 					"protocol": "https",
 					"host": [
-						"sma-g2-adm",
+						"sma-g7-adm",
 						"prosodie",
 						"com"
 					],
@@ -167,7 +167,7 @@
 				}
 			],
 			"request": {
-				"url": "https://sma-g2-adm.prosodie.com/servlet/chatHttp",
+				"url": "https://sma-g7-adm.prosodie.com/servlet/chatHttp",
 				"method": "POST",
 				"header": [
 					{
@@ -236,7 +236,7 @@
 				}
 			],
 			"request": {
-				"url": "https://sma-g2-adm.prosodie.com/servlet/chatHttp",
+				"url": "https://sma-g7-adm.prosodie.com/servlet/chatHttp",
 				"method": "POST",
 				"header": [
 					{
