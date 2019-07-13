@@ -1,20 +1,18 @@
 {
-	"variables": [],
 	"info": {
-		"name": "DYDU",
 		"_postman_id": "7b4b0350-c316-42e6-4ca7-bfa8af6e084d",
-		"description": "",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+		"name": "DYDU",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "VA Chat - SNOW",
 			"request": {
-				"url": "",
 				"method": "GET",
 				"header": [],
-				"body": {},
-				"description": null
+				"url": {
+					"raw": ""
+				}
 			},
 			"response": []
 		},
@@ -24,25 +22,36 @@
 				{
 					"listen": "test",
 					"script": {
-						"type": "text/javascript",
+						"id": "33b0a87b-266d-4d0b-9d0d-b8901cc015a9",
 						"exec": [
-							"var jsonData = JSON.parse(responseBody);\r",
-							"postman.setEnvironmentVariable(\"text\", jsonData.text);\r",
-							"postman.setEnvironmentVariable(\"context\", jsonData.context);\r",
-							"//postman.setEnvironmentVariable(\"context_string\", jsonData.context);\r",
-							"pm.globals.set(\"context_string\", atob(jsonData.context));\r",
-							"\r",
-							"console.log(atob(pm.environment.get(\"text\")));\r",
-							"console.log(pm.globals.get(\"context_string\"));\r",
-							"\r",
-							""
-						]
+							"var data = JSON.parse(responseBody);",
+							"console.log(\"contextId: \" + b64DecodeUnicode(data.context)); ",
+							"try{",
+							"console.log(\"text: \" + b64DecodeUnicode(data.text)); }",
+							"catch(e){",
+							"console.log(\"text not found\"); ",
+							"    ",
+							"}",
+							"",
+							"console.log(\"typeResponse: \" + data.typeResponse); ",
+							"console.log(\"guiAction: \" + b64DecodeUnicode(data.guiAction)); ",
+							"",
+							"",
+							"function b64DecodeUnicode(str) {",
+							"    return decodeURIComponent(atob(str).split('').map(function(c) {",
+							"        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);",
+							"    }).join(''));",
+							"}"
+						],
+						"type": "text/javascript"
 					}
 				}
 			],
 			"request": {
+				"method": "GET",
+				"header": [],
 				"url": {
-					"raw": "https://sma-g7-adm.prosodie.com/servlet/talk?context={{context_string}}&botId=cb81e7a0-8782-485f-ad09-786dab4d9b6b&userInput=REQ000011631623&space=VALE&language=pt&userId=user_teste&userUrl=postman&format=json",
+					"raw": "https://sma-g7-adm.prosodie.com/servlet/talk?context=276f9aa3-be89-4526-90c9-08cd5e683dd9&botId=a3f3b9fb-e886-4736-afee-5f6ba69bb9da&userInput=rthrhtrthrth&space=VALE&language=pt&userId=user_teste&userUrl=postman&format=json&purelivechat=true",
 					"protocol": "https",
 					"host": [
 						"sma-g7-adm",
@@ -56,60 +65,41 @@
 					"query": [
 						{
 							"key": "context",
-							"value": "{{context_string}}",
-							"equals": false,
-							"description": ""
+							"value": "276f9aa3-be89-4526-90c9-08cd5e683dd9"
 						},
 						{
 							"key": "botId",
-							"value": "cb81e7a0-8782-485f-ad09-786dab4d9b6b",
-							"equals": true,
-							"description": ""
+							"value": "a3f3b9fb-e886-4736-afee-5f6ba69bb9da"
 						},
 						{
 							"key": "userInput",
-							"value": "REQ000011631623",
-							"equals": true,
-							"description": ""
+							"value": "rthrhtrthrth"
 						},
 						{
 							"key": "space",
-							"value": "VALE",
-							"equals": true,
-							"description": ""
+							"value": "VALE"
 						},
 						{
 							"key": "language",
-							"value": "pt",
-							"equals": true,
-							"description": ""
+							"value": "pt"
 						},
 						{
 							"key": "userId",
-							"value": "user_teste",
-							"equals": true,
-							"description": ""
+							"value": "user_teste"
 						},
 						{
 							"key": "userUrl",
-							"value": "postman",
-							"equals": true,
-							"description": ""
+							"value": "postman"
 						},
 						{
 							"key": "format",
-							"value": "json",
-							"equals": true,
-							"description": ""
+							"value": "json"
+						},
+						{
+							"key": "purelivechat",
+							"value": "true"
 						}
-					],
-					"variable": []
-				},
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{  \r\n   \"type\":\"poll\",\r\n   \"parameters\":{  \r\n       \"lastPoll\":{{lastPoll}},\r\n      \"mode\":\"Polling\",\r\n      \"contextId\":\"442cc658-e513-45e8-b65e-f11b95b8d52d\",\r\n      \"botId\":\"b12d17c8-8950-42da-8abb-25bcd4511d00\",\r\n      \"qualificationMode\":false,\r\n      \"language\":\"pt\",\r\n      \"space\":\"Defaut\",\r\n      \"solutionUsed\":\"LIVECHAT\",\r\n      \"timestamp\":{{timestamp}}\r\n   }\r\n}"
+					]
 				},
 				"description": "asd"
 			},
@@ -119,9 +109,20 @@
 			"name": "getLivechatResponse",
 			"event": [
 				{
+					"listen": "prerequest",
+					"script": {
+						"id": "986d5761-f1d2-44b2-bce8-3cac874b1e6e",
+						"exec": [
+							"pm.globals.set(\"lastPoll\", pm.variables.get(\"timestamp\"));",
+							"pm.globals.set(\"timestamp\", Math.floor(Date.now()));"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
 					"listen": "test",
 					"script": {
-						"type": "text/javascript",
+						"id": "355550cb-4b11-4e0d-8730-80e90bb5fc5a",
 						"exec": [
 							"//console.log(\"Post-request: \");",
 							"var data = JSON.parse(responseBody);",
@@ -151,34 +152,51 @@
 							"    return decodeURIComponent(atob(str).split('').map(function(c) {",
 							"        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);",
 							"    }).join(''));",
-							"}"
-						]
-					}
-				},
-				{
-					"listen": "prerequest",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"pm.globals.set(\"lastPoll\", pm.variables.get(\"timestamp\"));",
-							"pm.globals.set(\"timestamp\", Math.floor(Date.now()));"
-						]
+							"}",
+							"try{console.log(\"specialAction: \" + b64DecodeUnicode(data.values.specialAction));",
+							"}catch(e){}",
+							"try{console.log(\"code: \" + b64DecodeUnicode(data.values.code)); ",
+							"}catch(e){}",
+							"try{console.log(\"contextId: \" + b64DecodeUnicode(data.values.contextId)); ",
+							"}catch(e){}",
+							"try{console.log(\"text: \" + b64DecodeUnicode(data.values.text)); ",
+							"}catch(e){}",
+							"try{console.log(\"type: \" + data.type); }catch(e){}",
+							""
+						],
+						"type": "text/javascript"
 					}
 				}
 			],
 			"request": {
-				"url": "https://sma-g7-adm.prosodie.com/servlet/chatHttp",
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
+						"name": "Content-Type",
 						"value": "application/json",
-						"description": ""
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{  \r\n   \"type\":\"poll\",\r\n   \"parameters\":{  \r\n       \"lastPoll\":{{lastPoll}},\r\n      \"mode\":\"Polling\",\r\n      \"contextId\":\"898f31e3-273e-470c-83eb-f84913e06196\",\r\n      \"botId\":\"cb81e7a0-8782-485f-ad09-786dab4d9b6b\",\r\n      \"qualificationMode\":false,\r\n      \"language\":\"pt\",\r\n      \"space\":\"VALE\",\r\n      \"solutionUsed\":\"LIVECHAT\",\r\n      \"timestamp\":{{timestamp}}\r\n   }\r\n}"
+					"raw": "{  \r\n   \"type\":\"poll\",\r\n   \"parameters\":{  \r\n       \"lastPoll\":{{lastPoll}},\r\n      \"mode\":\"Polling\",\r\n      \"contextId\":\"276f9aa3-be89-4526-90c9-08cd5e683dd9\",\r\n      \"botId\":\"a3f3b9fb-e886-4736-afee-5f6ba69bb9da\",\r\n      \"qualificationMode\":false,\r\n      \"language\":\"pt\",\r\n      \"space\":\"VALE\",\r\n      \"solutionUsed\":\"LIVECHAT\",\r\n      \"timestamp\":{{timestamp}}\r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "https://sma-g7-adm.prosodie.com/servlet/chatHttp",
+					"protocol": "https",
+					"host": [
+						"sma-g7-adm",
+						"prosodie",
+						"com"
+					],
+					"path": [
+						"servlet",
+						"chatHttp"
+					]
 				},
 				"description": "Get a livechat response from specific context"
 			},
@@ -188,8 +206,20 @@
 			"name": "getLivechatResponse",
 			"event": [
 				{
+					"listen": "prerequest",
+					"script": {
+						"id": "986d5761-f1d2-44b2-bce8-3cac874b1e6e",
+						"type": "text/javascript",
+						"exec": [
+							"pm.globals.set(\"lastPoll\", pm.variables.get(\"timestamp\"));",
+							"pm.globals.set(\"timestamp\", Math.floor(Date.now()));"
+						]
+					}
+				},
+				{
 					"listen": "test",
 					"script": {
+						"id": "d513b1d2-a1e0-4302-9425-7c2485b66515",
 						"type": "text/javascript",
 						"exec": [
 							"//console.log(\"Post-request: \");",
@@ -223,20 +253,12 @@
 							"}"
 						]
 					}
-				},
-				{
-					"listen": "prerequest",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"pm.globals.set(\"lastPoll\", pm.variables.get(\"timestamp\"));",
-							"pm.globals.set(\"timestamp\", Math.floor(Date.now()));"
-						]
-					}
 				}
 			],
 			"request": {
-				"url": "https://sma-g7-adm.prosodie.com/servlet/chatHttp",
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "POST",
 				"header": [
 					{
@@ -246,7 +268,20 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{  \r\n   \"type\":\"poll\",\r\n   \"parameters\":{  \r\n       \"lastPoll\":{{lastPoll}},\r\n      \"mode\":\"Polling\",\r\n      \"contextId\":\"a533614b-ad93-43cc-9e4f-4fcc561cd49a\",\r\n      \"botId\":\"b12d17c8-8950-42da-8abb-25bcd4511d00\",\r\n      \"qualificationMode\":false,\r\n      \"language\":\"pt\",\r\n      \"space\":\"Defaut\",\r\n      \"solutionUsed\":\"LIVECHAT\",\r\n      \"timestamp\":{{timestamp}}\r\n   }\r\n}"
+					"raw": "{  \r\n   \"type\":\"poll\",\r\n   \"parameters\":{  \r\n   \t  \"lastPoll\":{{lastPoll}},\r\n      \"mode\":\"Polling\",\r\n      \"contextId\":\"a533614b-ad93-43cc-9e4f-4fcc561cd49a\",\r\n      \"botId\":\"b12d17c8-8950-42da-8abb-25bcd4511d00\",\r\n      \"qualificationMode\":false,\r\n      \"language\":\"pt\",\r\n      \"space\":\"Defaut\",\r\n      \"solutionUsed\":\"LIVECHAT\",\r\n      \"timestamp\":{{timestamp}}\r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "https://sma-g2-adm.prosodie.com/servlet/chatHttp",
+					"protocol": "https",
+					"host": [
+						"sma-g2-adm",
+						"prosodie",
+						"com"
+					],
+					"path": [
+						"servlet",
+						"chatHttp"
+					]
 				},
 				"description": "Get a livechat response from specific context"
 			},
